@@ -69,11 +69,24 @@ def show_exam_result(request, course_id):
         course=course
     ).order_by("-submitted_at").first()
 
+    total_questions = Question.objects.filter(
+        lesson__course=course
+    ).count()
+
+    correct_answers = 0
+
+    if submission:
+        correct_answers = round(
+            (submission.score / 100) * total_questions
+        )
+
     return render(
         request,
         "course/exam_result.html",
         {
             "course": course,
-            "submission": submission
+            "submission": submission,
+            "total_questions": total_questions,
+            "correct_answers": correct_answers,
         }
     )
