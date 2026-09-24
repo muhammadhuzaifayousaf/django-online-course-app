@@ -29,7 +29,7 @@ def submit(request, course_id):
     course = get_object_or_404(Course, id=course_id)
 
     if request.method == "POST":
-        questions = course.questions.all()
+        questions = Question.objects.filter(lesson__course=course)
         total_questions = questions.count()
         correct_answers = 0
 
