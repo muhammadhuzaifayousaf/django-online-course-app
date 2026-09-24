@@ -11,6 +11,14 @@ class Instructor(models.Model):
         return self.user.username
 
 
+class Learner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    courses = models.ManyToManyField("Course", blank=True, related_name="learners")
+
+    def __str__(self):
+        return self.user.username
+
+
 class Course(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -68,6 +76,9 @@ class Submission(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def is_get_score(self):
+        return self.score
 
     def __str__(self):
         return f"{self.user.username} - {self.course.name} - {self.score}"
