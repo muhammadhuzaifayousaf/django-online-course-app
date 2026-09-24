@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Course, Submission
+from .models import Course, Question, Submission
 
 def home(request):
     courses = Course.objects.all()
@@ -12,10 +12,15 @@ def home(request):
 
 def course_details(request, course_id):
     course = get_object_or_404(Course, id=course_id)
+    questions = Question.objects.filter(lesson__course=course)
+
     return render(
         request,
         "course/course_details_bootstrap.html",
-        {"course": course}
+        {
+            "course": course,
+            "questions": questions
+        }
     )
 
 
