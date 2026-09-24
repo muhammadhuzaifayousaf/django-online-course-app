@@ -2,6 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Course, Submission
 
+def home(request):
+    courses = Course.objects.all()
+    return render(
+        request,
+        "course/home.html",
+        {"courses": courses}
+    )
 
 def course_details(request, course_id):
     course = get_object_or_404(Course, id=course_id)
